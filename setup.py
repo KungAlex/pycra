@@ -13,6 +13,10 @@ setup(
       url='http://github.com/kungalex/pycra',
       download_url='https://github.com/kungalex/pycra/archive/0.0.1.tar.gz',
 
+      install_requires=[
+            'pbkdf2helper',
+      ],
+
       keywords=['challenge-response', 'Authentication', 'PBKDF2'],
       classifiers=[],
       )
