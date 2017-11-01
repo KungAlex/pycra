@@ -1,7 +1,6 @@
 import hashlib
 import hmac
 import datetime
-import random
 import pbkdf2helper
 
 
@@ -9,12 +8,12 @@ def create_challenge(user):
     """
     Create a new Nonce for (This challenge) based on username and some random data
     :param user: A example User Object
-    :return: nonce as HMAC
+    :return: nonce/cnonce  as HMAC
     """
 
     print("______Create new Challenge________")
     key = str(datetime.datetime.utcnow()) + user.username
-    msg = str(random.randint(0, 999999))
+    msg = pbkdf2helper.generate_salt(12)
     nonce = hmac.new(key.encode(), msg.encode(), hashlib.sha256).hexdigest()
 
     print("Challenge nonce: " + str(nonce))
