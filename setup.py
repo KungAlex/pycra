@@ -7,7 +7,7 @@ setup(
       description='Python Challenge Response Authentication with PBKDF2',
 
       author='Alexander Kleinschmidt (kungalex)',
-      author_email='kung4lex@gmail.ooo',
+      author_email='kung4lex@gmail.com',
       license='MIT',
 
       url='http://github.com/kungalex/pycra',
