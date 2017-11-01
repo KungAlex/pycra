@@ -26,14 +26,27 @@ def auth_check(user, response):
     Compare Answer for the least given challenge to this User
     :param user: A example User Object
     :param response: Answer from Client
-    :return: True or False
+    :return: True or False, nextnonce
     """
     print("______Auth Check________")
-    answer = calculate_answer(user.nonce, user.password)
+    print("Response from client: " + str(response))
+
+    if user.nextnonce:
+        answer = calculate_answer(user.nextnonce, user.password)
+
+    else:
+        answer = calculate_answer(user.nonce, user.password)
+
+    print("Answer on server: " + str(answer))
+
     check = hmac.compare_digest(answer, response)
     print("Is Auth: " + str(check))
+    if check:
+        nextnonce=answer
+    else:
+        nextnonce=None
 
-    return check
+    return check, nextnonce
 
 
 def calculate_answer(challenge, password):
@@ -46,9 +59,8 @@ def calculate_answer(challenge, password):
     :param password:
     :return: answer
     """
-    print("______Calculate Answer________")
+
     answer = hmac.new(challenge.encode(), password.encode(), hashlib.sha256).hexdigest()
-    print("Servers answer: " + str(answer))
 
     return answer
 
