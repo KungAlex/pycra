@@ -61,10 +61,10 @@ def auth_check(user, response):
     print("Response from client: " + str(response))
 
     if user.nextnonce:
-        answer = calculate_answer(user.nextnonce, user.cnonce, user.password)
+        answer = calculate_answer(user.nextnonce, user.cnonce, user.password).hexdigest()
 
     else:
-        answer = calculate_answer(user.nonce, user.cnonce, user.password)
+        answer = calculate_answer(user.nonce, user.cnonce, user.password).hexdigest()
 
     print("Answer on server: " + str(answer))
 
@@ -92,9 +92,11 @@ def calculate_answer(challenge, cnonce, password):
     """
 
     answer = hmac.new(challenge.encode(), password.encode(), hashlib.sha256)
+    #answer = hmac.new(password.encode(),challenge.encode(), hashlib.sha256)
+
     answer.update(cnonce.encode())
 
-    return answer.hexdigest()
+    return answer
 
 
 def calculate_answer_for_pbkdf2(challenge, cnonce, password, algorithm, salt, iterations):
@@ -115,12 +117,14 @@ def calculate_answer_for_pbkdf2(challenge, cnonce, password, algorithm, salt, it
     print("______Calculate Answer________")
     password_hash=pbkdf2helper.encode(password, salt, int(iterations))
     print("Password Hash: "+str(password_hash))
+    #answer = hmac.new(password_hash.encode(), challenge.encode(), hashlib.sha256)
     answer = hmac.new(challenge.encode(), password_hash.encode(), hashlib.sha256)
+
     print("Client answer: " + str(answer))
 
     answer.update(cnonce.encode())
 
-    return answer.hexdigest()
+    return answer
 
 
 
