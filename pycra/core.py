@@ -4,19 +4,48 @@ import datetime
 import pbkdf2helper
 
 
+def sign_message(msg, psk, cnonce):
+    """
+    Sign Server Message with psk
+
+    :param msg:
+    :param psk:
+    :param cnonce:
+    :return:
+    """
+
+    key = cnonce+psk
+    return hmac.new(key.encode(), msg.encode(), hashlib.sha256).hexdigest()
+
+
+def verify_message(msg, psk, cnonce, response):
+    """
+    Helper function to verfiy message with psk
+
+    :param msg:
+    :param psk:
+    :param cnonce:
+    :param response:
+    :return: True or False
+    """
+
+    key = cnonce + psk
+    encoded=hmac.new(key.encode(), msg.encode(), hashlib.sha256).hexdigest()
+    check = hmac.compare_digest(encoded, response)
+    return check
+
+
 def create_challenge(user):
     """
     Create a new Nonce for (This challenge) based on username and some random data
+
     :param user: A example User Object
     :return: nonce/cnonce  as HMAC
     """
 
-    print("______Create new Challenge________")
     key = str(datetime.datetime.utcnow()) + user.username
     msg = pbkdf2helper.generate_salt(12)
     nonce = hmac.new(key.encode(), msg.encode(), hashlib.sha256).hexdigest()
-
-    print("Challenge nonce: " + str(nonce))
 
     return nonce
 
@@ -32,10 +61,10 @@ def auth_check(user, response):
     print("Response from client: " + str(response))
 
     if user.nextnonce:
-        answer = calculate_answer(user.nextnonce, user.password)
+        answer = calculate_answer(user.nextnonce, user.cnonce, user.password)
 
     else:
-        answer = calculate_answer(user.nonce, user.password)
+        answer = calculate_answer(user.nonce, user.cnonce, user.password)
 
     print("Answer on server: " + str(answer))
 
@@ -49,28 +78,32 @@ def auth_check(user, response):
     return check, nextnonce
 
 
-def calculate_answer(challenge, password):
+def calculate_answer(challenge, cnonce, password):
     """
     Calculate Answer on Server and for Client without hashed Passwords
     Needs to save Passwords on Server in Plaintext!
     -> Answer = HMAC(challenge, Plaintext Password, sha256)
 
     :param challenge:
+    :param cnonce:
     :param password:
-    :return: answer
+
+    :return: answer, verify_hash
     """
 
-    answer = hmac.new(challenge.encode(), password.encode(), hashlib.sha256).hexdigest()
+    answer = hmac.new(challenge.encode(), password.encode(), hashlib.sha256)
+    answer.update(cnonce.encode())
 
-    return answer
+    return answer.hexdigest()
 
 
-def calculate_answer_for_pbkdf2(challenge, password, algorithm, salt, iterations):
+def calculate_answer_for_pbkdf2(challenge, cnonce, password, algorithm, salt, iterations):
     """
     Calculate Answer on Client for PBKDF2 hashed Passwords.
     -> Answer = HMAC(challenge, PBKDF2 hashed Password, sha256)
 
     :param challenge:
+    :param cnonce
     :param password:
     :param algorithm:
     :param salt:
@@ -82,10 +115,12 @@ def calculate_answer_for_pbkdf2(challenge, password, algorithm, salt, iterations
     print("______Calculate Answer________")
     password_hash=pbkdf2helper.encode(password, salt, int(iterations))
     print("Password Hash: "+str(password_hash))
-    answer = hmac.new(challenge.encode(), password_hash.encode(), hashlib.sha256).hexdigest()
+    answer = hmac.new(challenge.encode(), password_hash.encode(), hashlib.sha256)
     print("Client answer: " + str(answer))
 
-    return answer
+    answer.update(cnonce.encode())
+
+    return answer.hexdigest()
 
 
 
