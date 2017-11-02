@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
       name='pycra',
       packages=['pycra'],
-      version='0.0.1',
+      version='0.0.2',
       description='Python Challenge Response Authentication with PBKDF2',
 
       author='Alexander Kleinschmidt (kungalex)',
@@ -11,13 +11,13 @@ setup(
       license='MIT',
 
       url='http://github.com/kungalex/pycra',
-      download_url='https://github.com/kungalex/pycra/archive/0.0.1.tar.gz',
+      download_url='https://github.com/kungalex/pycra/archive/0.0.2.tar.gz',
 
       install_requires=[
             'pbkdf2helper',
       ],
 
       keywords=['challenge-response', 'Authentication', 'PBKDF2'],
-      classifiers=[],
+      classifiers=['develop'],
       )
 
