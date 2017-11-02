@@ -10,6 +10,7 @@ class ClientUser(object):
     def __init__(self, username, password):
         self.username = username
         self.password = password
+        self.nonce = None
         self.cnonce = None
         self.psk = None
 
@@ -23,7 +24,6 @@ class ServerUser(object):
         self.username = username
         self.password = password
         self.nonce = None
-        self.nextnonce = None
         self.cnonce = None
         self.psk = None
 

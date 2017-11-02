@@ -2,6 +2,7 @@ from pycra.test.base import BaseTestClass
 from pycra.core import sign_message, verify_message, create_challenge
 import pbkdf2helper
 
+
 class VerifyTest(BaseTestClass):
 
     def setUp(self):
