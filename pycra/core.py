@@ -60,20 +60,16 @@ def auth_check(user, response):
     print("______Auth Check________")
     print("Response from client: " + str(response))
 
-    if user.nextnonce:
-        answer = calculate_answer(user.nextnonce, user.cnonce, user.password).hexdigest()
-
-    else:
-        answer = calculate_answer(user.nonce, user.cnonce, user.password).hexdigest()
+    answer = calculate_answer(user.nonce, user.cnonce, user.password).hexdigest()
 
     print("Answer on server: " + str(answer))
 
     check = hmac.compare_digest(answer, response)
     print("Is Auth: " + str(check))
     if check:
-        nextnonce=answer
+        nextnonce = answer
     else:
-        nextnonce=None
+        nextnonce = None
 
     return check, nextnonce
 
