@@ -4,5 +4,4 @@ itsdangerous==0.24
 Jinja2==2.9.6
 MarkupSafe==1.0
 pbkdf2helper==0.0.2
-pycra==0.0.1
 Werkzeug==0.12.2

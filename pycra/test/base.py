@@ -2,22 +2,9 @@ from unittest import TestCase
 import pbkdf2helper
 
 
-class ClientUser(object):
+class User(object):
     """
-    My Test Client User Model
-    """
-
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-        self.nonce = None
-        self.cnonce = None
-        self.psk = None
-
-
-class ServerUser(object):
-    """
-    My Test Sever User Model
+    My Test User Model
     """
 
     def __init__(self, username, password):
@@ -38,20 +25,20 @@ class BaseTestClass(TestCase):
         # 0. Init User Credentials
 
         # user with password in plaintext
-        cls.serverUser1 = ServerUser(password="secret",
+        cls.serverUser1 = User(password="secret",
                                      username="kungalex")
 
-        cls.clientUser1 = ClientUser(password="secret",
+        cls.clientUser1 = User(password="secret",
                                      username="kungalex")
 
 
         # user with PBKDF2 hashed password (only on Server)
         pwh = pbkdf2helper.encode("secret", pbkdf2helper.generate_salt(12), 1000)
 
-        cls.serverUser2 = ServerUser(password=pwh,
+        cls.serverUser2 = User(password=pwh,
                                      username="kungalex-with-hashed-pw")
 
-        cls.clientUser2 = ClientUser(password="secret",
+        cls.clientUser2 = User(password="secret",
                                      username="kungalex-with-hashed-pw")
 
         psk = pbkdf2helper.generate_salt(12)

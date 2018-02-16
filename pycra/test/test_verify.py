@@ -7,7 +7,7 @@ class VerifyTest(BaseTestClass):
 
     def setUp(self):
 
-        cnonce = create_challenge(self.clientUser1)
+        cnonce = create_challenge(self.clientUser1.username)
 
         self.clientUser1.cnonce=cnonce
         self.serverUser1.cnonce=cnonce
