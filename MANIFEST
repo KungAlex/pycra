@@ -3,4 +3,3 @@ setup.cfg
 setup.py
 pycra/__init__.py
 pycra/core.py
-pycra/test.py

@@ -24,10 +24,8 @@ class User(object):
 def index():
     response = {
 
-        'description': 'Hallo from Flask-cra',
-        'loginUrl': 'POST /api/login',
-        'params': '{username, cnonce}'
-
+        'description': 'Hallo from Flask Pycra Example',
+        'loginUrl': 'POST /api/login'
     }
 
     return jsonify(response), 200

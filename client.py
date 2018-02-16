@@ -13,15 +13,26 @@ time.sleep(1)
 print(response.json())
 
 response = requests.post('http://localhost:5000/api/login', json={'username': username})
-r=response.json()
-print(r)
+if response.status_code == 200:
+    r=response.json()
+    print(r)
 
-answer = pycra.calculate_answer_for_pbkdf2(r['nonce'], password, algorithm=r['algorithm'], salt=r['salt'], iterations=r['iterations'])
-print(answer)
+    answer = pycra.calculate_answer_for_pbkdf2(r['nonce'], password, algorithm=r['algorithm'], salt=r['salt'],
+                                               iterations=r['iterations'])
+    print(answer)
 
-time.sleep(3)
+    time.sleep(3)
 
-response = requests.post('http://localhost:5000/api/token', json={'username': username, 'answer': answer})
-r = response.json()
+    response = requests.post('http://localhost:5000/api/token', json={'username': username, 'answer': answer})
 
-print(r)
+    if response.status_code == 200:
+
+        r = response.json()
+        print(r)
+
+    else:
+        print(response)
+
+else:
+    print(response)
+
