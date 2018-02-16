@@ -25,13 +25,11 @@ if response.status_code == 200:
 
     response = requests.post('http://localhost:5000/api/token', json={'username': username, 'answer': answer})
 
-    if response.status_code == 200:
+    if response.status_code == 201:
 
         r = response.json()
         print(r)
 
-    else:
-        print(response)
 
 else:
     print(response)

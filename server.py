@@ -107,7 +107,7 @@ def get_token():
 
 
 if __name__ == '__main__':
-    pwh = pbkdf2helper.encode("secret", pbkdf2helper.generate_salt(12), 1000)
+    pwh = pbkdf2helper.encode("secret", 'sha256', pbkdf2helper.generate_salt(12), 1000)
     testuser = User(password=pwh, username="kungalex")
 
     print(str(testuser.username) + " : " + str(testuser.password))

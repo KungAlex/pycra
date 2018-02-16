@@ -75,9 +75,8 @@ def calculate_answer_for_pbkdf2(nonce, password, algorithm, salt, iterations):
     :param iterations:
     :return: answer
     """
-    assert algorithm == pbkdf2helper.algorithm
 
-    password_hash = pbkdf2helper.encode(password, salt, int(iterations))
+    password_hash = pbkdf2helper.encode(password, algorithm, salt, int(iterations))
     answer = calculate_answer(nonce, password_hash)
 
     return answer.hexdigest()
