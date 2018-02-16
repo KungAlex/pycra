@@ -18,6 +18,5 @@ setup(
       ],
 
       keywords=['challenge-response', 'Authentication', 'PBKDF2'],
-      classifiers=['develop'],
       )
 
