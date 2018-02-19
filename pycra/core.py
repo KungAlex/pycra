@@ -36,7 +36,7 @@ def auth_check(nonce, password_hash, response):
     print("______Auth Check________")
     print("Response from client: " + str(response))
 
-    answer = calculate_answer(nonce, password_hash).hexdigest()
+    answer = calculate_answer(nonce, password_hash)
 
     print("Answer on server: " + str(answer))
 
@@ -58,25 +58,6 @@ def calculate_answer(nonce, password_hash):
     """
 
     answer = hmac.new(key=password_hash.encode(), msg=nonce.encode(), digestmod=hashlib.sha256)
-    #    answer = hmac.new(msg=password_hash.encode(), key=nonce.encode(), digestmod=hashlib.sha256)
-
-
-    return answer
-
-
-def calculate_answer_for_pbkdf2(nonce, password, algorithm, salt, iterations):
-    """
-    Calculate Answer on Client for PBKDF2 hashed Passwords.
-
-    :param nonce
-    :param password:
-    :param algorithm:
-    :param salt:
-    :param iterations:
-    :return: answer
-    """
-
-    password_hash = pbkdf2helper.encode(password, algorithm, salt, int(iterations))
-    answer = calculate_answer(nonce, password_hash)
-
     return answer.hexdigest()
+
+

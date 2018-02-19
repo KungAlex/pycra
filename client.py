@@ -1,6 +1,7 @@
 import pycra
 import requests
 import time
+import pbkdf2helper
 
 # Simple Client with Challenge-Response Authentication (PBKDF2 hashed Passwords stored)
 
@@ -17,8 +18,9 @@ if response.status_code == 200:
     r=response.json()
     print(r)
 
-    answer = pycra.calculate_answer_for_pbkdf2(r['nonce'], password, algorithm=r['algorithm'], salt=r['salt'],
-                                               iterations=r['iterations'])
+    password_hash = pbkdf2helper.encode(password, algorithm=r['algorithm'], salt=r['salt'], iterations=int(r['iterations']))
+    answer = pycra.calculate_answer(r['nonce'], password_hash)
+
     print(answer)
 
     time.sleep(3)
